@@ -1,0 +1,24 @@
+{
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Moxie",
+  "contributors": [
+    {
+      "name": "Crisoforo Gaspar Hernandez",
+      "email": "mitogh@gmail.com"
+    },
+    {
+      "name": "Dominique A. Mariano",
+      "email": "dominique.acpal.mariano@gmail.com"
+    }
+  ],
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-phpcs": "^0.7.0"
+  }
+}
