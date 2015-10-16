@@ -37,7 +37,7 @@ add_filter( 'plugin_action_links', 'pm_admin_action_links', 10, 2 );
 function pm_admin_options() {
 	if ( isset( $_POST['submit'] ) && ! empty( $_POST['submit'] ) && wp_verify_nonce( $_POST['pm_save_nonce'], 'save postmark settings' ) ) {
 
-		if ( isset($_POST['pm_enabled']) && 1 === $_POST['pm_enabled'] ) {
+		if ( isset( $_POST['pm_enabled'] ) && 1 === $_POST['pm_enabled'] ) {
 			$pm_enabled = 1;
 		} else {
 			$pm_enabled = 0;
@@ -46,25 +46,25 @@ function pm_admin_options() {
 		$api_key = $_POST['pm_api_key'];
 		$sender_email = $_POST['pm_sender_address'];
 
-		if ( isset($_POST['pm_forcehtml']) && $_POST['pm_forcehtml'] == 1 ) {
+		if ( isset( $_POST['pm_forcehtml'] ) && 1 === $_POST['pm_forcehtml'] ) {
 			$pm_forcehtml = 1;
 		} else {
 			$pm_forcehtml = 0;
 		}
 
-		if( isset($_POST['pm_poweredby']) && $_POST['pm_poweredby'] == 1 ) {
+		if ( isset( $_POST['pm_poweredby'] ) && 1 === $_POST['pm_poweredby'] ) {
 			$pm_poweredby = 1;
 		} else {
 			$pm_poweredby = 0;
 		}
 
-		update_option('postmark_enabled', $pm_enabled);
-		update_option('postmark_api_key', $api_key);
-		update_option('postmark_sender_address', $sender_email);
-		update_option('postmark_force_html', $pm_forcehtml);
-		update_option('postmark_poweredby', $pm_poweredby);
+		update_option( 'postmark_enabled', $pm_enabled );
+		update_option( 'postmark_api_key', $api_key );
+		update_option( 'postmark_sender_address', $sender_email );
+		update_option( 'postmark_force_html', $pm_forcehtml );
+		update_option( 'postmark_poweredby', $pm_poweredby );
 
-		$msg_updated = "Postmark settings have been saved.";
+		$msg_updated = 'Postmark settings have been saved.';
 	}
 ?>
 
@@ -112,15 +112,15 @@ function pm_admin_options() {
 		</tr>
 		<tr>
 		  <th><label for="pm_sender_address">Sender Email Address</label></th>
-		  <td><input name="pm_sender_address" id="pm_sender_address" type="text" value="<?php echo get_option('postmark_sender_address'); ?>" class="regular-text"/> <br/><span style="font-size:11px;">This email needs to be one of your <strong>verified sender signatures</strong>. <br/>It will appear as the "from" email on all outbound messages. <a href="https://postmarkapp.com/signatures">Set one up in Postmark</a>.</span></td>
+		  <td><input name="pm_sender_address" id="pm_sender_address" type="text" value="<?php echo get_option( 'postmark_sender_address' ); ?>" class="regular-text"/> <br/><span style="font-size:11px;">This email needs to be one of your <strong>verified sender signatures</strong>. <br/>It will appear as the "from" email on all outbound messages. <a href="https://postmarkapp.com/signatures">Set one up in Postmark</a>.</span></td>
 		</tr>
 		<tr>
 		  <th><label for="pm_forcehtml">Force HTML</label></th>
-		  <td><input name="pm_forcehtml" id="pm_forcehtml" type="checkbox" value="1"<?php if(get_option('postmark_force_html') == 1): echo ' checked="checked"'; endif; ?>/> <span style="font-size:11px;">Force all emails to be sent as HTML.</span></td>
+		  <td><input name="pm_forcehtml" id="pm_forcehtml" type="checkbox" value="1"<?php if ( 1 === get_option( 'postmark_force_html' ) ): echo ' checked="checked"'; endif; ?>/> <span style="font-size:11px;">Force all emails to be sent as HTML.</span></td>
 		</tr>
 		<tr>
 		  <th><label for="pm_poweredby">Support Postmark</label></th>
-		  <td><input name="pm_poweredby" id="pm_poweredby" type="checkbox" value="1"<?php if(get_option('postmark_poweredby') == 1): echo ' checked="checked"'; endif; ?>/> <span style="font-size:11px;">Adds a credit to Postmark at the bottom of emails.</span></td>
+		  <td><input name="pm_poweredby" id="pm_poweredby" type="checkbox" value="1"<?php if ( 1 === get_option( 'postmark_poweredby' ) ): echo ' checked="checked"'; endif; ?>/> <span style="font-size:11px;">Adds a credit to Postmark at the bottom of emails.</span></td>
 		</tr>
 		</tbody>
 	  </table>
@@ -137,7 +137,7 @@ function pm_admin_options() {
 		<tbody>
 		<tr>
 		  <th><label for="pm_test_address">Send a Test Email To</label></th>
-		  <td> <input name="pm_test_address" id="pm_test_address" type="text" value="<?php echo get_option('postmark_sender_address'); ?>" class="regular-text"/></td>
+		  <td> <input name="pm_test_address" id="pm_test_address" type="text" value="<?php echo get_option( 'postmark_sender_address' ); ?>" class="regular-text"/></td>
 		</tr>
 		</tbody>
 	  </table>
@@ -153,68 +153,64 @@ function pm_admin_options() {
 <?php
 }
 
-add_action('wp_ajax_pm_admin_test', 'pm_admin_test_ajax');
+add_action( 'wp_ajax_pm_admin_test', 'pm_admin_test_ajax' );
 function pm_admin_test_ajax() {
 	$response = pm_send_test();
-	wp_send_json($response);
+	wp_send_json( $response );
+	// End Admin Functionality.
 }
 
-// End Admin Functionality
-
-
-
-
 // Override wp_mail() if postmark enabled
-if(get_option('postmark_enabled') == 1){
-	if (!function_exists("wp_mail")){
-		function wp_mail( $to, $subject, $message, $headers = '', $attachments = array()) {
+if ( 1 === get_option( 'postmark_enabled' ) ) {
+	if ( ! function_exists( 'wp_mail' ) ) {
+		function wp_mail( $to, $subject, $message, $headers = '', $attachments = array() ) {
 
-			// Define Headers
+			// Define Headers.
 			$postmark_headers = array(
 				'Accept' => 'application/json',
 				'Content-Type' => 'application/json',
-				'X-Postmark-Server-Token' => get_option('postmark_api_key')
+				'X-Postmark-Server-Token' => get_option( 'postmark_api_key' ),
 			);
 
-			// If "Support Postmark" is on
-			if(get_option('postmark_poweredby') == 1){
-				// Check Content Type
-				if(!strpos($headers, "text/html")){
+			// If "Support Postmark" is on.
+			if ( 1 === get_option( 'postmark_poweredby' ) ) {
+				// Check Content Type.
+				if ( ! strpos( $headers, 'text/html' ) ) {
 					$message .= "\n\nPostmark solves your WordPress email problems. Send transactional email confidently using http://postmarkapp.com";
 				}
 			}
 
-			// Send Email
-			if(!is_array($to)){
-				$recipients = explode(",", $to);
+			// Send Email.
+			if ( ! is_array( $to ) ) {
+				$recipients = explode( ',' , $to );
 			} else {
 				$recipients = $to;
 			}
 
-			foreach($recipients as $recipient){
+			foreach ( $recipients as $recipient ) {
 				// Construct Message
 				$email = array();
 				$email['To'] = $recipient;
-				$email['From'] = get_option('postmark_sender_address');
+				$email['From'] = get_option( 'postmark_sender_address' );
 				$email['Subject'] = $subject;
 				$email['TextBody'] = $message;
 
-				if(strpos($headers, "text/html" ) !== false || get_option('postmark_force_html') == 1){
+				if ( false !== strpos( $headers, 'text/html' ) || 1 === get_option( 'postmark_force_html' ) ) {
 					$email['HtmlBody'] = $message;
 				}
 
-				$response = pm_send_mail($postmark_headers, $email);
+				$response = pm_send_mail( $postmark_headers, $email );
 			}
-			return ( isset($response) ) ? $response : '';
+			return ( isset( $response ) ) ? $response : '';
 		}
 	}
 }
 
 
-function pm_send_test(){
+function pm_send_test() {
 	$email_address = $_POST['email'];
 
-	// Define Headers
+	// Define Headers.
 	$postmark_headers = array(
 		'Accept' => 'application/json',
 		'Content-Type' => 'application/json',
@@ -222,7 +218,7 @@ function pm_send_test(){
 	);
 
 	$message = 'This is a test email sent via Postmark from '.get_bloginfo( 'name' ) . '.';
-	$html_message = 'This is a test email sent via <strong>Postmark</strong> from '.get_bloginfo('name').'.';
+	$html_message = 'This is a test email sent via <strong>Postmark</strong> from '.get_bloginfo( 'name' ).'.';
 
 	if ( 1 === get_option( 'postmark_poweredby' ) ) {
 		$message .= "\n\nPostmark solves your WordPress email problems. Send transactional email confidently using http://postmarkapp.com";
@@ -235,16 +231,16 @@ function pm_send_test(){
 	$email['Subject'] = get_bloginfo( 'name' ) . ' Postmark Test';
 	$email['TextBody'] = $message;
 
-	if ( 1 === get_option('postmark_force_html') ) {
+	if ( 1 === get_option( 'postmark_force_html' ) ) {
 		$email['HtmlBody'] = $html_message;
 	}
 
 	$response = pm_send_mail( $postmark_headers, $email );
 
 	if ( false === $response ) {
-		return "Test Failed with Error";
+		return 'Test Failed with Error';
 	} else {
-		return "Test Sent";
+		return 'Test Sent';
 	}
 }
 
