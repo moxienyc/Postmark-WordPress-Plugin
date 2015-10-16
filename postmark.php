@@ -1,28 +1,11 @@
 <?php
 /*
-Plugin Name: Postmark Approved WordPress Plugin
-Plugin URI: http://www.andydev.co.uk
+Plugin Name: Postmark WordPress Plugin
+Plugin URI: https://github.com/moxienyc/Postmark-WordPress-Plugin
 Description: Overwrites wp_mail to send emails through Postmark.
-Author: Andrew Yates
-Version: 1.5
-Author URI: http://www.andydev.co.uk
-Created: 2011-07-05
-Modified: 2012-09-10
-
-Copyright 2011 - 2012  Andrew Yates & Postmarkapp.com
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License, version 2, as
-published by the Free Software Foundation.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+Author: Moxie
+Version: 1.0.0
+Author URI: https://getmoxied.net/
 */
 
 // Define
