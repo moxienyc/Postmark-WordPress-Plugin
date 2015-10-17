@@ -13,8 +13,8 @@ define( 'POSTMARK_ENDPOINT', 'http://api.postmarkapp.com/email' );
 
 // Admin Functionality.
 add_action( 'admin_menu', 'pm_admin_menu' );
-// Add Postmark to Settings.
 
+// Add Postmark to Settings.
 function pm_admin_menu() {
 	add_options_page( 'Postmark', 'Postmark', 'manage_options', 'pm_admin', 'pm_admin_options' );
 }
@@ -87,10 +87,10 @@ function pm_admin_options() {
 
   <div class="wrap">
 
-	<?php if( isset($msg_updated) && $msg_updated != '' ) : ?><div class="updated"><p><?php echo $msg_updated; ?></p></div><?php endif; ?>
+	<?php if( isset( $msg_updated ) && '' !== $msg_updated ) : ?><div class="updated"><p><?php echo $msg_updated; ?></p></div><?php endif; ?>
 
 	<div id="icon-tools" class="icon32"></div>
-	<h2><img src="<?php echo WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__)) ?>images/PM-Logo.jpg" /></h2>
+	<h2><img src="<?php echo WP_PLUGIN_URL . '/' . str_replace( basename( __FILE__ ), '',plugin_basename( __FILE__ ) ) ?>images/PM-Logo.jpg" /></h2>
 	<h3>What is Postmark?</h3>
 	<p>This Postmark Approved plugin enables WordPress blogs of any size to deliver and track WordPress notification emails reliably, with minimal setup time and zero maintenance. </p>
 	<p>If you don't already have a free Postmark account, <a href="https://postmarkapp.com/sign_up">you can get one in minutes</a>. Every account comes with 1000 free sends.</p>
@@ -99,16 +99,16 @@ function pm_admin_options() {
 
 	<h3>Your Postmark Settings</h3>
 	<form method="post" action="<?php echo admin_url( 'options-general.php' ); ?>?page=pm_admin">
-	  <?php wp_nonce_field('save postmark settings','pm_save_nonce'); ?>
+	  <?php wp_nonce_field( 'save postmark settings','pm_save_nonce' ); ?>
 	  <table class="form-table">
 		<tbody>
 		<tr>
 		  <th><label for="pm_enabled">Send using Postmark</label></th>
-		  <td><input name="pm_enabled" id="pm_enabled" type="checkbox" value="1"<?php if(get_option('postmark_enabled') == 1): echo ' checked="checked"'; endif; ?>/> <span style="font-size:11px;">Sends emails sent using wp_mail via Postmark.</span></td>
+		  <td><input name="pm_enabled" id="pm_enabled" type="checkbox" value="1"<?php if ( 1 === get_option( 'postmark_enabled' ) ) : echo ' checked="checked"'; endif; ?>/> <span style="font-size:11px;">Sends emails sent using wp_mail via Postmark.</span></td>
 		</tr>
 		<tr>
 		  <th><label for="pm_api_key">Postmark API Key</label></th>
-		  <td><input name="pm_api_key" id="pm_api_key" type="text" value="<?php echo get_option('postmark_api_key'); ?>" class="regular-text"/> <br/><span style="font-size:11px;">Your API key is available in the <strong>credentials</strong> screen of your Postmark server. <a href="https://postmarkapp.com/servers/">Create a new server in Postmark</a>.</span></td>
+		  <td><input name="pm_api_key" id="pm_api_key" type="text" value="<?php echo get_option( 'postmark_api_key' ); ?>" class="regular-text"/> <br/><span style="font-size:11px;">Your API key is available in the <strong>credentials</strong> screen of your Postmark server. <a href="https://postmarkapp.com/servers/">Create a new server in Postmark</a>.</span></td>
 		</tr>
 		<tr>
 		  <th><label for="pm_sender_address">Sender Email Address</label></th>
@@ -116,11 +116,11 @@ function pm_admin_options() {
 		</tr>
 		<tr>
 		  <th><label for="pm_forcehtml">Force HTML</label></th>
-		  <td><input name="pm_forcehtml" id="pm_forcehtml" type="checkbox" value="1"<?php if ( 1 === get_option( 'postmark_force_html' ) ): echo ' checked="checked"'; endif; ?>/> <span style="font-size:11px;">Force all emails to be sent as HTML.</span></td>
+		  <td><input name="pm_forcehtml" id="pm_forcehtml" type="checkbox" value="1"<?php if ( 1 === get_option( 'postmark_force_html' ) ) : echo ' checked="checked"'; endif; ?>/> <span style="font-size:11px;">Force all emails to be sent as HTML.</span></td>
 		</tr>
 		<tr>
 		  <th><label for="pm_poweredby">Support Postmark</label></th>
-		  <td><input name="pm_poweredby" id="pm_poweredby" type="checkbox" value="1"<?php if ( 1 === get_option( 'postmark_poweredby' ) ): echo ' checked="checked"'; endif; ?>/> <span style="font-size:11px;">Adds a credit to Postmark at the bottom of emails.</span></td>
+		  <td><input name="pm_poweredby" id="pm_poweredby" type="checkbox" value="1"<?php if ( 1 === get_option( 'postmark_poweredby' ) ) : echo ' checked="checked"'; endif; ?>/> <span style="font-size:11px;">Adds a credit to Postmark at the bottom of emails.</span></td>
 		</tr>
 		</tbody>
 	  </table>
@@ -160,7 +160,7 @@ function pm_admin_test_ajax() {
 	// End Admin Functionality.
 }
 
-// Override wp_mail() if postmark enabled
+// Override wp_mail() if postmark enabled.
 if ( 1 === get_option( 'postmark_enabled' ) ) {
 	if ( ! function_exists( 'wp_mail' ) ) {
 		function wp_mail( $to, $subject, $message, $headers = '', $attachments = array() ) {
@@ -188,7 +188,7 @@ if ( 1 === get_option( 'postmark_enabled' ) ) {
 			}
 
 			foreach ( $recipients as $recipient ) {
-				// Construct Message
+				// Construct Message.
 				$email = array();
 				$email['To'] = $recipient;
 				$email['From'] = get_option( 'postmark_sender_address' );
